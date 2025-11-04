@@ -1,3 +1,4 @@
+console.log('app.js loaded OK');
 (async () => {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
@@ -236,4 +237,5 @@
 
   renderTree();
   initAuth();
+
 })();
