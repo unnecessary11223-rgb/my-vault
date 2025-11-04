@@ -1,4 +1,4 @@
-const CACHE = 'vault-v1';
+const CACHE = 'vault-v3';
 const CORE = [
   './',
   './index.html',
@@ -19,4 +19,5 @@ self.addEventListener('fetch', e=>{
       const copy=res.clone(); caches.open(CACHE).then(c=>c.put(e.request, copy)); return res;
     }))
   );
+
 });
