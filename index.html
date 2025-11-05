@@ -40,12 +40,14 @@
     .modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center}
     .card{width:min(420px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
     .card h3{margin:0 0 10px 0}
-    /* --- Sticky toggle button --- */
+    /* Sticky toggle button: always on top and clickable */
     #toggleSidebar {
       position: fixed;
       left: 10px;
       top: 10px;
-      z-index: 9999;
+      z-index: 2147483647; /* highest practical z-index */
+      pointer-events: auto;
+      display: block;
       padding: 8px 10px;
       border-radius: 8px;
       background: var(--accent);
