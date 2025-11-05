@@ -45,7 +45,7 @@
       position: fixed;
       left: 10px;
       top: 10px;
-      z-index: 2147483647; /* highest practical z-index */
+      z-index: 2147483647;
       pointer-events: auto;
       display: block;
       padding: 8px 10px;
@@ -55,6 +55,8 @@
       border: none;
       font-weight: 700;
     }
+    /* small hover for close button */
+    #authClose:hover { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -118,16 +120,28 @@
     </main>
   </div>
 
-  <!-- Auth Modal -->
+  <!-- Auth Modal (with close × button) -->
   <div id="authModal" class="modal hidden">
     <div class="card">
-      <h3 id="authTitle">Admin setup</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 id="authTitle">Admin setup</h3>
+        <button id="authClose" title="Close" style="
+          background:none;
+          border:none;
+          color:var(--muted);
+          font-size:20px;
+          font-weight:bold;
+          cursor:pointer;
+        ">&times;</button>
+      </div>
       <p id="authText" class="muted"></p>
+
       <div id="setupBox">
         <input id="newPass" type="password" placeholder="Create admin password" style="width:100%;margin:6px 0" />
         <input id="newPass2" type="password" placeholder="Confirm password" style="width:100%;margin:6px 0" />
         <button id="setupBtn" class="btn primary" style="width:100%">Set password</button>
       </div>
+
       <div id="loginBox" class="hidden">
         <input id="loginPass" type="password" placeholder="Enter admin password" style="width:100%;margin:6px 0" />
         <button id="loginDo" class="btn primary" style="width:100%">Login</button>
