@@ -45,8 +45,28 @@ console.log('app.js loaded');
   const newPass2 = document.getElementById('newPass2');
   const loginPass = document.getElementById('loginPass');
 
-  // Sidebar toggle
-  toggleSidebar.addEventListener('click', () => app.classList.toggle('collapsed'));
+  // --- Permanent toggle wiring + enforce sticky style (prevents it being covered) ---
+  if(toggleSidebar){
+    Object.assign(toggleSidebar.style, {
+      position: 'fixed',
+      left: '10px',
+      top: '10px',
+      zIndex: 2147483647,
+      pointerEvents: 'auto',
+      display: 'block'
+    });
+    if(!toggleSidebar._wired){
+      toggleSidebar.addEventListener('click', ()=> app.classList.toggle('collapsed'));
+      toggleSidebar._wired = true;
+    }
+  }
+
+  // Sidebar toggle (safe fallback for any other code)
+  // ensure the app can also be toggled by keyboard (Ctrl+Alt+M)
+  if(!window._vaultHotkeyAdded){
+    window.addEventListener('keydown', e => { if(e.ctrlKey && e.altKey && e.key.toLowerCase()==='m'){ app.classList.toggle('collapsed'); }});
+    window._vaultHotkeyAdded = true;
+  }
 
   // State
   let folders = await DB.list('folders');
@@ -263,7 +283,7 @@ console.log('app.js loaded');
     const w = window.open('', '_blank');
     if(!w) return alert('Popup blocked');
     w.document.write('<pre id="out" style="white-space:pre-wrap"></pre>');
-    const post = (msg) => { try { w.document.getElementById('out').textContent += msg + '\\n'; } catch(e){} };
+    const post = (msg) => { try { w.document.getElementById('out').textContent += msg + '\n'; } catch(e){} };
     try {
       if(!window.Runner || !Runner.runCSharp) {
         post('C# runtime not installed. To enable, add .NET WASM runtime and update runner.js.');
