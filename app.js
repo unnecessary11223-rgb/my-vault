@@ -44,6 +44,7 @@ console.log('app.js loaded');
   const newPass = document.getElementById('newPass');
   const newPass2 = document.getElementById('newPass2');
   const loginPass = document.getElementById('loginPass');
+  const authClose = document.getElementById('authClose'); // close button in modal
 
   // --- Permanent toggle wiring + enforce sticky style (prevents it being covered) ---
   if(toggleSidebar){
@@ -97,8 +98,18 @@ console.log('app.js loaded');
     authModal.classList.remove('hidden');
     setupBox.classList.toggle('hidden', !setup);
     loginBox.classList.toggle('hidden', setup);
+    // if modal opened, focus first input for convenience
+    setTimeout(()=> {
+      if(setup) newPass.focus();
+      else loginPass.focus();
+    }, 50);
   }
   function closeModal() { authModal.classList.add('hidden'); }
+
+  // wire the newly added close button (×)
+  if(authClose){
+    authClose.addEventListener('click', () => { closeModal(); });
+  }
 
   setupBtn.addEventListener('click', async () => {
     const p1 = (newPass.value||'').trim(), p2 = (newPass2.value||'').trim();
