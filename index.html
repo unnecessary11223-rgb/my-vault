@@ -9,8 +9,9 @@
   <style>
     :root{--bg:#0f172a;--panel:#0b1220;--line:#1f2937;--text:#e5e7eb;--muted:#94a3b8;--accent:#22d3ee;--bad:#7f1d1d;--good:#16a34a}
     *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
-    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
-    aside{background:var(--panel);border-right:1px solid var(--line);padding:10px}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh;transition:grid-template-columns .2s ease}
+    .app.collapsed{grid-template-columns:0 1fr}
+    aside{background:var(--panel);border-right:1px solid var(--line);padding:10px;overflow:hidden}
     header{display:flex;align-items:center;justify-content:space-between;gap:8px}
     h1{font-size:16px;margin:0}
     .btn{cursor:pointer;border:1px solid var(--line);background:#0a0f1d;color:var(--text);padding:6px 10px;border-radius:10px}
@@ -30,23 +31,23 @@
     .role.guest{background:#1e293b;color:#e5e7eb;border:1px solid #334155}
     .role.admin{background:var(--good);color:#04120a}
     .crumbs{font-size:12px;color:var(--muted)}
-    .editor{display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;height:calc(100vh - 140px)}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px}
+    .workspace{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:calc(100vh - 160px)}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;min-height:140px}
     textarea{width:100%;height:100%;resize:none;font-family:ui-monospace,Consolas,monospace;line-height:1.35}
-    #preview{min-height:120px;overflow:auto;background:#06111a}
+    #output{white-space:pre-wrap;overflow:auto}
     .hidden{display:none !important}
-    /* Modal */
     .modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center}
     .card{width:min(420px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
     .card h3{margin:0 0 10px 0}
   </style>
 </head>
 <body>
-  <div class="app">
+  <div id="app" class="app">
     <aside>
       <header>
         <h1>My Vault</h1>
         <div class="stack">
+          <button id="toggleSidebar" class="btn" title="Hide/Show sidebar">☰</button>
           <button id="installBtn" class="btn" hidden>Install</button>
           <button id="loginBtn" class="btn">Login</button>
           <button id="logoutBtn" class="btn hidden">Logout</button>
@@ -77,19 +78,25 @@
           <button id="saveBtn" class="btn primary">Save</button>
           <button id="deleteBtn" class="btn danger">Delete</button>
           <button id="openRaw" class="btn">Open</button>
+          <button id="renderBtn" class="btn">Render</button>
+          <button id="runCsBtn" class="btn">Run C#</button>
         </div>
       </div>
 
-      <div class="editor">
+      <div class="workspace">
         <div class="panel">
           <label>File name:
             <input id="fileName" placeholder="e.g. notes.txt or code.py" style="width:60%;margin-left:8px" />
           </label>
+          <textarea id="editor" placeholder="Type or paste your content here…"></textarea>
         </div>
-        <textarea id="editor" class="panel" placeholder="Type or paste your content here…"></textarea>
-        <div id="preview" class="panel"></div>
-        <div id="status" class="panel"></div>
+        <div class="panel">
+          <strong>Output</strong>
+          <pre id="output"></pre>
+        </div>
       </div>
+
+      <div id="status" class="panel" style="margin-top:8px"></div>
     </main>
   </div>
 
@@ -112,6 +119,7 @@
 
   <script src="./db.js"></script>
   <script src="./auth.js"></script>
+  <script src="./runner.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
