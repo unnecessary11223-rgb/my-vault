@@ -7,7 +7,10 @@
   <meta name="theme-color" content="#0f172a" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <style>
-    :root{--bg:#0f172a;--panel:#0b1220;--line:#1f2937;--text:#e5e7eb;--muted:#94a3b8;--accent:#22d3ee;--bad:#7f1d1d;--good:#16a34a}
+    :root {
+      --bg:#0f172a;--panel:#0b1220;--line:#1f2937;--text:#e5e7eb;
+      --muted:#94a3b8;--accent:#22d3ee;--bad:#7f1d1d;--good:#16a34a;
+    }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
     .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh;transition:grid-template-columns .2s ease}
@@ -37,30 +40,26 @@
     textarea{width:100%;height:100%;resize:none;font-family:ui-monospace,Consolas,monospace;line-height:1.35}
     #output{white-space:pre-wrap;overflow:auto}
     .hidden{display:none !important}
-    .modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center}
-    .card{width:min(420px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .modal{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;z-index:99999}
+    .card{width:min(420px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
     .card h3{margin:0 0 10px 0}
-    /* Sticky toggle button: always on top and clickable */
-    #toggleSidebar {
-      position: fixed;
-      left: 10px;
-      top: 10px;
-      z-index: 2147483647;
-      pointer-events: auto;
-      display: block;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: var(--accent);
-      color: #05121a;
-      border: none;
-      font-weight: 700;
+    /* sticky sidebar toggle */
+    #toggleSidebar{
+      position:fixed;left:10px;top:10px;z-index:2147483647;
+      pointer-events:auto;display:block;padding:8px 10px;
+      border-radius:8px;background:var(--accent);color:#05121a;
+      border:none;font-weight:700;
     }
-    /* small hover for close button */
-    #authClose:hover { color: var(--accent); }
+    /* close button styling */
+    #authClose{
+      position:absolute;right:10px;top:6px;background:none;border:none;
+      color:var(--muted);font-size:22px;font-weight:bold;cursor:pointer;
+      z-index:2147483647;
+    }
+    #authClose:hover{color:var(--accent)}
   </style>
 </head>
 <body>
-  <!-- Sticky toggle button (always visible) -->
   <button id="toggleSidebar" title="Hide/Show sidebar">☰</button>
 
   <div id="app" class="app">
@@ -106,7 +105,7 @@
       <div class="workspace">
         <div class="panel">
           <label>File name:
-            <input id="fileName" placeholder="e.g. notes.txt or code.py" style="width:60%;margin-left:8px" />
+            <input id="fileName" placeholder="e.g. notes.txt or code.py" style="width:60%;margin-left:8px"/>
           </label>
           <textarea id="editor" placeholder="Type or paste your content here…"></textarea>
         </div>
@@ -120,30 +119,21 @@
     </main>
   </div>
 
-  <!-- Auth Modal (with close × button) -->
+  <!-- Auth Modal -->
   <div id="authModal" class="modal hidden">
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 id="authTitle">Admin setup</h3>
-        <button id="authClose" title="Close" style="
-          background:none;
-          border:none;
-          color:var(--muted);
-          font-size:20px;
-          font-weight:bold;
-          cursor:pointer;
-        ">&times;</button>
-      </div>
+      <button id="authClose" title="Close">&times;</button>
+      <h3 id="authTitle">Admin setup</h3>
       <p id="authText" class="muted"></p>
 
       <div id="setupBox">
-        <input id="newPass" type="password" placeholder="Create admin password" style="width:100%;margin:6px 0" />
-        <input id="newPass2" type="password" placeholder="Confirm password" style="width:100%;margin:6px 0" />
+        <input id="newPass" type="password" placeholder="Create admin password" style="width:100%;margin:6px 0"/>
+        <input id="newPass2" type="password" placeholder="Confirm password" style="width:100%;margin:6px 0"/>
         <button id="setupBtn" class="btn primary" style="width:100%">Set password</button>
       </div>
 
       <div id="loginBox" class="hidden">
-        <input id="loginPass" type="password" placeholder="Enter admin password" style="width:100%;margin:6px 0" />
+        <input id="loginPass" type="password" placeholder="Enter admin password" style="width:100%;margin:6px 0"/>
         <button id="loginDo" class="btn primary" style="width:100%">Login</button>
       </div>
     </div>
